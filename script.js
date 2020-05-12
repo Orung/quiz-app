@@ -1,82 +1,174 @@
-//QUESTION.JS
+(function() {
+    // Functions
+    function buildQuiz() {
+        // variable to store the HTML output
+        const output = [];
 
-function Question(text, choices, answer) {
-    this.text = text;
-    this.choices = choices;
-    this.answer = answer;
-}
-Question.prototype.correctAnswer = function(choice) {
-    return choice === this.answer;
-}
+        // for each question...
+        myQuestions.forEach(
+            (currentQuestion, questionNumber) => {
 
+                // variable to store the list of possible answers
+                const answers = [];
 
-//QUIZ-CONTROLLER
-function Quiz(question) {
-    this.score = 0;
-    this.questions = questions;
-    this.questionIndex = 0;
-}
-Quiz.prototype.getQuestionIndex = function() {
+                // and for each available answer...
+                for (letter in currentQuestion.answers) {
 
-    return this.questions[this.questionIndex];
-}
-Quiz.prototype.isEnded = function() {
-    return this.questions.length === this.questionIndex;
-}
-Quiz.prototype.guess = function(answer) {
-    this.questionIndex++;
-    if (this.getQuestionIndex().correctAnswer(answer)) {
-        this.score++;
+                    // ...add an HTML radio button
+                    answers.push(
+                        `<label>
+                <input type="radio" name="question${questionNumber}" value="${letter}">
+                ${letter} :
+                ${currentQuestion.answers[letter]}
+              </label>`
+                    );
+                }
+
+                // add this question and its answers to the output
+                output.push(
+                    `<div class="slide">
+              <div class="question"> ${currentQuestion.question} </div>
+              <div class="answers"> ${answers.join("")} </div>
+            </div>`
+                );
+            }
+        );
+
+        // finally combine our output list into one string of HTML and put it on the page
+        quizContainer.innerHTML = output.join('');
     }
-}
 
+    function showResults() {
 
+        // gather answer containers from our quiz
+        const answerContainers = quizContainer.querySelectorAll('.answers');
 
-//APP.JS
-function populate() {
-    if (quiz.isEnded()) {
-        showScores();
-    } else {
-        var element = document.getElementById('question');
-        element.innerHTML = quiz.getQuestionIndex().text;
-        //show choices
-        var choices = quiz.getQuestionIndex().choices;
-        for (var i = 0; i < choices.length; i++) {
-            var element = document.getElementById('choice' + i);
-            element.innerHTML = choices[i];
-            guess("btn" + i, choices[i]);
+        // keep track of user's answers
+        let numCorrect = 0;
+
+        // for each question...
+        myQuestions.forEach((currentQuestion, questionNumber) => {
+
+            // find selected answer
+            const answerContainer = answerContainers[questionNumber];
+            const selector = `input[name=question${questionNumber}]:checked`;
+            const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
+            // if answer is correct
+            if (userAnswer === currentQuestion.correctAnswer) {
+                // add to the number of correct answers
+                numCorrect++;
+
+                // color the answers green
+                answerContainers[questionNumber].style.color = 'lightgreen';
+            }
+            // if answer is wrong or blank
+            else {
+                // color the answers red
+                answerContainers[questionNumber].style.color = 'red';
+            }
+        });
+
+        // show number of correct answers out of total
+        resultsContainer.innerHTML = `You scored ${numCorrect} out of ${myQuestions.length}`;
+    }
+
+    function showSlide(n) {
+        slides[currentSlide].classList.remove('active-slide');
+        slides[n].classList.add('active-slide');
+        currentSlide = n;
+        if (currentSlide === 0) {
+            previousButton.style.display = 'none';
+        } else {
+            previousButton.style.display = 'inline-block';
+        }
+        if (currentSlide === slides.length - 1) {
+            nextButton.style.display = 'none';
+            submitButton.style.display = 'inline-block';
+        } else {
+            nextButton.style.display = 'inline-block';
+            submitButton.style.display = 'none';
         }
     }
-};
 
-function guess(id, guess) {
-    var button = document.getElementById(id);
-    button.onclick = function() {
-        quiz.guess(guess);
-        populate();
+    function showNextSlide() {
+        showSlide(currentSlide + 1);
     }
-}
 
-function showScores() {
-    var gameOverHtml = "<h1>Result</h1>";
-    gameOverHtml += "<h2  id='score'>Your Scores:" + quiz.score + "</h2>";
-    var element = getElementById("quiz");
-    element.innerHTML = gameOverHtml;
-}
+    function showPreviousSlide() {
+        showSlide(currentSlide - 1);
+    }
 
-var questions = [
-    new Question("What is the full meaning of YAHOO?", ["Java", "Promise", "Yet Another Hierarchical Officious Oracle", "Yet Another Hierarchical Officious Oracle"], "Yet Another Hierarchical Officious Oracle"),
-    new Question("What is the full meaning of GOOGLE", ["Global Organization of Oriented Group Language of Earth", "Promise", "Orung", "Sunday"], "Global Organization of Oriented Group Language of Earth"),
-    new Question("What is the full meaning of IPaddress ", ["Java", "Promise", "Internet Protocol address", "Sunday"], "Internet Protocol address"),
-    new Question("What is the full meaning of virus", ["Java", "Promise", "Vital Information Resources Under Seize", "Sunday"], "Vital Information Resources Under Seize"),
-    new Question("What is the full meaning of URL", ["Uniform Resource Location", "Promise", "Vital Information Resources Under Seize", "Sunday"], "Uniform Resource Location"),
-    new Question("What is the full meaning of GIF", ["Java", "Graphic Interchange Format", "Vital Information Resources Under Seize", "Sunday"], "Graphic Interchange Format"),
-    new Question("What is the full meaning of GPS", ["Global Positioning System", "Promise", "Vital Information Resources Under Seize", "Sunday"], "Global Positioning System"),
-    new Question("What is the full meaning of CCTV", ["Java", "Promise", "Closed Circuit Television", "Sunday"], "Closed Circuit Television"),
-    new Question("What is the full meaning of CVV", ["Card Verification Value", "Promise", "Vital Information Resources Under Seize", "Sunday"], "Card Verification Value"),
-    new Question("What is the full meaning of XHTML", ["Java", "Promise", "	Extensible Hypertext Markup Language", "Sunday"], "	Extensible Hypertext Markup Language")
-];
+    // Variables
+    const quizContainer = document.getElementById('quiz');
+    const resultsContainer = document.getElementById('results');
+    const submitButton = document.getElementById('submit');
+    const myQuestions = [{
+            question: "1. What is the full meaning of YAHOO?",
+            answers: {
+                a: "Yet Another Hierarchical Officious Oracle",
+                b: "Your Account Has Officially Open",
+                c: "Yet Another Higher Organizational Operation",
+                d: "Yahoo is yahoo"
+            },
+            correctAnswer: "a"
+        },
+        {
+            question: "2. What is the full meaning of GOOGLE?",
+            answers: {
+                a: "Growth Of Organizated Global Leadership Enlightenment",
+                b: "Group Organized to Optain Global Language Earthwide",
+                c: "Global Organization of Oriented Group Language of Earth",
+                d: "Greatest Organized Operating Group Learning Era"
+            },
+            correctAnswer: "c"
+        },
+        {
+            question: "3. What is the full meaning of IP address",
+            answers: {
+                a: "Indirect Protocol Address",
+                b: "Internet Personall address",
+                c: "Intermidate to Profesionall Assistant",
+                d: "Internet Protocol address"
+            },
+            correctAnswer: "d"
+        },
+        {
+            question: "4. What is the full meaning of URL?",
+            answers: {
+                a: "Uniform Resource Location",
+                b: "Universal Reusable Link",
+                c: "Unified Registration Located",
+                d: "All of the above"
+            },
+            correctAnswer: "a"
+        },
+        {
+            question: "5. What is the full meaning of virus?",
+            answers: {
+                a: "VIsual RUst System",
+                b: "Vital Iota of Resources Ubieted by System",
+                c: "Vital Information Resources Under Seize",
+                d: "Virtual Intelligent Run Under System"
+            },
+            correctAnswer: "c"
+        }
+    ];
 
-var quiz = new Quiz(questions);
+    // Kick things off
+    buildQuiz();
 
-populate()
+    // Pagination
+    const previousButton = document.getElementById("previous");
+    const nextButton = document.getElementById("next");
+    const slides = document.querySelectorAll(".slide");
+    let currentSlide = 0;
+
+    // Show the first slide
+    showSlide(currentSlide);
+
+    // Event listeners
+    submitButton.addEventListener('click', showResults);
+    previousButton.addEventListener("click", showPreviousSlide);
+    nextButton.addEventListener("click", showNextSlide);
+})();

@@ -1,146 +1,93 @@
-    *,
-    *::before,
-    *::after {
-        box-sizing: border-box;
-        font-family: Gotham Rounded;
-    }
-    
-     :root {
-        --hue-neutral: 200;
-        --hue-wrong: 0;
-        --hue-correct: 145;
-    }
-    
-    body {
-        --hue: var(--hue-neutral);
-        margin: 0;
-        padding: 0;
-        display: flex;
-        width: 100vw;
-        height: 100vh;
-        justify-content: center;
-        align-items: center;
-        background-color: hsl(var(--hue), 100%, 20%);
-    }
-    
-    body.correct {
-        --hue: var(--hue-correct);
-    }
-    
-    body.wrong {
-        --hue: var(--hue-wrong);
-    }
-    
-    .card {
-        width: 600px;
-        max-width: 80%;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 0 10px 2px;
-    }
-    
+@import url(https://fonts.googleapis.com/css?family=Work+Sans:300,600);
+body {
+    font-size: 20px;
+    font-family: 'Work Sans', sans-serif;
+    color: #333;
+    font-weight: 300;
+    text-align: center;
+    background-color: #f8f6f0;
+    margin: 0;
+}
+
+h1 {
+    font-weight: 300;
+    margin: 0px;
+    padding: 10px;
+    font-size: 20px;
+    background-color: rgb(26, 65, 109);
+    color: #fff;
+}
+
+.question {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.answers {
+    margin-bottom: 20px;
+    text-align: left;
+    display: inline-block;
+}
+
+.answers label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+button {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 22px;
+    background-color: #279;
+    color: #fff;
+    border: 0px;
+    border-radius: 3px;
+    padding: 20px;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+button:hover {
+    background-color: #38a;
+}
+
+.slide {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.active-slide {
+    opacity: 1;
+    z-index: 2;
+}
+
+.quiz-container {
+    background: #e7f2f1;
+    position: relative;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
+    margin: 5rem auto 0rem;
+    padding: 0;
+    display: flex;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+}
+
+@media(max-width:100px) {
     .quiz-container {
-        padding: 1rem;
+        width: 100%!important;
     }
-    
-    .quiz-header {
-        margin: 0;
-        background: #5a0e28;
-        color: #fff;
-        padding: 1rem;
-        border-radius: 4px 4px 0 0;
-        margin-bottom: 37px;
+    .controllers {
+        position: absolute;
+        top: 28rem;
+        text-align: center;
+        left: 8rem;
     }
-    
-    .btn-grid {
-        display: block;
-        margin: 38px 0;
-        padding: 10px;
-    }
-    
-    .btn-grid div {
-        padding: 8px 0;
-        background: #eff4f4;
-        margin-top: 8px;
-        width: 100%;
-        box-shadow: 1px 1px 3px #ccc;
-        /* */
-    }
-    
-    .btn-grid button {
-        padding: 8px 0;
-        font-size: 19px;
-        background: #eff4f4;
-        border: 1px solid #eff4f4;
-    }
-    
-    .btn-grid div {
-        width: 100%;
-    }
-    
-    .controls {
-        display: grid;
-        grid-template-columns: repeat(2, auto);
-        gap: 54px;
-        border-top: 1px solid #ccc;
-        padding: 9px 0;
-        /* margin: 38px 0; */
-    }
-    
-    .controls button {
-        font-size: 19px;
-        flex-grow: 1;
-        width: 100px;
-        background-color: #95073b;
-        border: 1px solid #95073b;
-        color: #fff;
-        font-weight: 600;
-    }
-    
-    .question {
-        border-bottom: 1px solid #004465;
-        /* padding: 11px; */
-        font-size: 30px;
-        font-weight: 900;
-        margin: 0;
-        margin-bottom: 2rem;
-        color: #004465;
-    }
-    
-    .ml-auto {
-        margin-left: auto;
-    }
-    
-    .buttons button {
-        min-width: 100%;
-        margin: 1rem 0;
-        text-align: left;
-        border-radius: 2rem;
-        border: 0;
-        padding: 1rem;
-        background: #e6f1f6;
-        font-size: 1.5rem;
-    }
-    
-    .buttons {
-        border-bottom: 1px solid #ccc;
-    }
-    /* .mr-auto {
-        margin-right: auto;
-    } */
-    
-    .span-nom {
-        border: 1px solid #962a3b;
-        background: #962a3b;
-        color: #f0e9e9;
-        padding: 19px 26px;
-        font-weight: 900;
-    }
-    
-    footer {
-        margin: 0;
-        background: #5a1828;
-        color: #fff;
-        padding: 0.1px 1rem;
-        border-radius: 0 0 4px 4px;
-    }
+}
