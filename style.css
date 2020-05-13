@@ -5,22 +5,32 @@ body {
     color: #333;
     font-weight: 300;
     text-align: center;
-    background-color: #f8f6f0;
+    /* background-color: #f8f6f0; */
     margin: 0;
+    background: #e7f2f1;
 }
 
 h1 {
     font-weight: 300;
     margin: 0px;
-    padding: 10px;
-    font-size: 20px;
-    background-color: rgb(26, 65, 109);
+    padding: 19px;
+    font-size: 34px;
+    background-color: #433301;
     color: #fff;
+    font-weight: 900;
 }
 
 .question {
     font-size: 30px;
     margin-bottom: 10px;
+    color: #433309;
+    font-weight: 600;
+}
+
+#result {
+    background: #3a3a3b;
+    color: #fff;
+    font-weight: 900;
 }
 
 .answers {
@@ -37,7 +47,7 @@ h1 {
 button {
     font-family: 'Work Sans', sans-serif;
     font-size: 22px;
-    background-color: #279;
+    background-color: #433309;
     color: #fff;
     border: 0px;
     border-radius: 3px;
@@ -48,7 +58,7 @@ button {
 }
 
 button:hover {
-    background-color: #38a;
+    background-color: #433309;
 }
 
 .slide {
@@ -67,7 +77,6 @@ button:hover {
 }
 
 .quiz-container {
-    background: #e7f2f1;
     position: relative;
     height: 200px;
     justify-content: center;
@@ -80,13 +89,13 @@ button:hover {
     align-items: center;
 }
 
-@media(max-width:100px) {
+@media(max-width :1200px) {
     .quiz-container {
         width: 100%!important;
     }
     .controllers {
         position: absolute;
-        top: 28rem;
+        top: 23rem;
         text-align: center;
         left: 8rem;
     }
